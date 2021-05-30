@@ -11,7 +11,11 @@ export const Button: React.FC<Props> = ({
   return (
     <button
       onClick={onClick}
-      className="w-48 bg-cta text-black text-xl font-extrabold rounded-lg py-3 focus:outline-none"
+      className={`w-48 text-xl font-extrabold rounded-lg py-3 focus:outline-none ${
+        variant === "outline"
+          ? "bg-transparent text-cta border border-cta"
+          : "bg-cta text-black"
+      }`}
     >
       {children}
     </button>
