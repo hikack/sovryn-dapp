@@ -21,13 +21,18 @@ module.exports = {
         white: "#E9EAE9",
         black: "#000000",
         overlay: "#333333",
-        " dapp-background": "#191919",
+        "dapp-background": "#191919",
         "warning-red": "#A52222",
+        "box-background": "#101010",
+        "box-border": "#575757",
       },
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      borderWidth: ["last"],
+      borderRadius: ["first", "last"],
+    },
   },
   plugins: [],
 };
