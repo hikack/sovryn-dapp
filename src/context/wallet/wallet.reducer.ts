@@ -20,6 +20,12 @@ export const walletReducer = (state: State, action: Action) => {
         },
       };
     }
+    case "SET_STATUS": {
+      return {
+        ...state,
+        status: action.payload,
+      };
+    }
     default:
       throw new Error("Unhandled action type");
   }

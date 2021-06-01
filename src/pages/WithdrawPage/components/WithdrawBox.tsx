@@ -4,12 +4,13 @@ import { WithdrawForm } from "./WithdrawForm";
 import { WithdrawConfirmation } from "./WithdrawConfirmation";
 import { WithdrawStatus } from "./WithdrawStatus";
 import { Transaction } from "../types/transaction.interface";
-import { useWalletState } from "context/wallet/wallet.context";
+import { useWalletState, useWalletUtils } from "context/wallet/wallet.context";
 import { ethereumToWei, weiToEthereum } from "utils/weiEthereumConverter";
 
 export const WithdrawBox: React.FC = () => {
-  const { web3, weenus } = useWalletState();
   const [hash, setHash] = useState("");
+  const { checkStatus } = useWalletUtils();
+  const { web3, weenus } = useWalletState();
   const [step, setStep] = useState<WithdrawBoxStep>(WithdrawBoxStep.FORM);
   const [transaction, setTransaction] = useState<Transaction>({
     activeAsset: "",
@@ -83,6 +84,7 @@ export const WithdrawBox: React.FC = () => {
   const handleStatus = (error: Error, hash: string) => {
     if (error) return;
 
+    checkStatus(web3!, hash);
     setHash(hash);
     setStep(WithdrawBoxStep.STATUS);
   };

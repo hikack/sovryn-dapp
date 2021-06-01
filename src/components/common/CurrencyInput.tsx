@@ -1,5 +1,5 @@
 import { useWalletState } from "context/wallet/wallet.context";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 
 interface Props {
   value: number;
@@ -29,6 +29,10 @@ export const CurrencyInput: React.FC<Props> = ({
     onChange?.((balances[activeAsset] * precentValue) / 100);
   };
 
+  useEffect(() => {
+    onChange?.(0);
+  }, [activeAsset, onChange]);
+
   return (
     <>
       <div className="bg-white rounded-lg flex">
@@ -39,7 +43,7 @@ export const CurrencyInput: React.FC<Props> = ({
           placeholder={placeholder}
           onChange={handleChange}
         />
-        <span className="text-black font-semibold flex justify-center items-center pr-5">
+        <span className="text-black font-semibold flex justify-center items-center pr-5 w-24">
           {activeAsset}
         </span>
       </div>

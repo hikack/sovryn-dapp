@@ -22,6 +22,7 @@ const initialState: State = {
   account: null,
   balances: {},
   weenus: null,
+  status: "pending",
 };
 
 export const WalletProvider: React.FC = ({ children }) => {
@@ -64,9 +65,7 @@ export const useWalletUtils = () => {
   const dispatch = useWalletDispatch();
 
   const connectToWallet = async () => {
-    if (window.ethereum) {
-      await window.ethereum.send("eth_requestAccounts");
-      const web3 = new Web3(window.ethereum);
+    const handleConnection = async (web3: Web3) => {
       const account = (await web3.eth.getAccounts())[0];
       const ethereumBalance = weiToEthereum(await web3.eth.getBalance(account));
       const weenus = await new web3.eth.Contract(WEENUS_ABI, WEENUS_ADDRESS);
@@ -85,10 +84,70 @@ export const useWalletUtils = () => {
         type: "SET_BALANCE",
         payload: { key: "WEENUS", value: weenusBalance },
       });
+    };
+
+    if (window.ethereum) {
+      await window.ethereum.send("eth_requestAccounts");
+      const web3 = new Web3(window.ethereum);
+
+      handleConnection(web3);
+
+      window.ethereum.on("accountsChanged", () => {
+        const web3 = new Web3(window.ethereum);
+        handleConnection(web3);
+      });
     }
+  };
+
+  const checkStatus = async (web3: Web3, hash: string) => {
+    const intervalId = setInterval(() => {
+      web3?.eth.getTransactionReceipt(
+        hash,
+        async (error, transactionReceipt) => {
+          if (error) return clearInterval(intervalId);
+
+          if (transactionReceipt) {
+            if (transactionReceipt.status) {
+              dispatch({ type: "SET_STATUS", payload: "successfull" });
+
+              const account = (await web3.eth.getAccounts())[0];
+              const ethereumBalance = weiToEthereum(
+                await web3.eth.getBalance(account)
+              );
+              const weenus = await new web3.eth.Contract(
+                WEENUS_ABI,
+                WEENUS_ADDRESS
+              );
+              const weenusBalance = weiToEthereum(
+                await weenus.methods.balanceOf(account).call()
+              );
+
+              dispatch({
+                type: "SET_BALANCE",
+                payload: { key: "rETH", value: ethereumBalance },
+              });
+              dispatch({
+                type: "SET_BALANCE",
+                payload: { key: "WEENUS", value: weenusBalance },
+              });
+            } else {
+              dispatch({ type: "SET_STATUS", payload: "failure" });
+            }
+
+            clearInterval(intervalId);
+          }
+        }
+      );
+    }, 3000);
+  };
+
+  const resetStatus = () => {
+    dispatch({ type: "SET_STATUS", payload: "pending" });
   };
 
   return {
     connectToWallet,
+    checkStatus,
+    resetStatus,
   };
 };
