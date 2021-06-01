@@ -1,6 +1,16 @@
 import { Button } from "components/common/Button";
+import { Transaction } from "../types/transaction.interface";
+import { formatCurrency } from "utils/formatCurrency";
 
-export const WithdrawConfirmation: React.FC = () => {
+interface Props {
+  transaction: Transaction;
+  onConfirm: () => void;
+}
+
+export const WithdrawConfirmation: React.FC<Props> = ({
+  transaction: { activeAsset, from, to, value, fee },
+  onConfirm,
+}) => {
   return (
     <>
       <h3 className="text-2xl font-semibold mb-12 text-dark-white">
@@ -8,10 +18,10 @@ export const WithdrawConfirmation: React.FC = () => {
       </h3>
       <h4 className="text-lg font-semibold text-dark-white">SEND</h4>
       <h4 className="text-lg font-semibold mb-9 text-dark-white">
-        10,000.00 WEENUS
+        {formatCurrency(value)} {activeAsset}
       </h4>
-      <p className="text-sm font-medium mb-8 text-dark-white">
-        From: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+      <p className="text-sm font-medium mb-8 text-dark-white truncate max-w-sm">
+        From: {from}
       </p>
       <img
         className="mb-8"
@@ -19,18 +29,18 @@ export const WithdrawConfirmation: React.FC = () => {
         width="40"
         alt="arrow-down"
       />
-      <p className="text-sm font-medium mb-8 text-dark-white">
-        To: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+      <p className="text-sm font-medium mb-8 text-dark-white truncate max-w-sm">
+        To: {to}
       </p>
       <div className="flex items-center w-full mb-9">
         <p className="text-sm font-medium flex-1 flex justify-center items-center">
           Tx Fee:
         </p>
         <p className="text-sm font-medium flex-1 flex justify-center items-center">
-          0.0006 rBTC
+          {fee} {activeAsset}
         </p>
       </div>
-      <Button>CONFIRM</Button>
+      <Button onClick={onConfirm}>CONFIRM</Button>
     </>
   );
 };

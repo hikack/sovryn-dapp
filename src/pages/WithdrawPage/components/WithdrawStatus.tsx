@@ -1,10 +1,12 @@
 import { Button } from "components/common/Button";
+import { ellipseBetween } from "utils/ellipseBetween";
 
 interface Props {
+  hash: string;
   onClose: () => void;
 }
 
-export const WithdrawStatus: React.FC<Props> = ({ onClose }) => {
+export const WithdrawStatus: React.FC<Props> = ({ hash, onClose }) => {
   return (
     <>
       <h3 className="text-2xl font-semibold mb-6 text-dark-white">
@@ -20,7 +22,7 @@ export const WithdrawStatus: React.FC<Props> = ({ onClose }) => {
         Status Pending
       </p>
       <p className="text-sm font-medium mb-10">
-        Tx Hash: <span className="text-cta">0x410x4133…890x413413</span>
+        Tx Hash: <span className="text-cta">{ellipseBetween(hash, 10)}</span>
       </p>
       <Button onClick={onClose} variant="outline">
         CLOSE

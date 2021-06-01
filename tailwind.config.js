@@ -35,6 +35,8 @@ module.exports = {
     extend: {
       borderWidth: ["last"],
       borderRadius: ["first", "last"],
+      opacity: ["disabled"],
+      cursor: ["disabled"],
     },
   },
   plugins: [],
