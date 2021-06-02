@@ -44,7 +44,7 @@ export const WithdrawBox: React.FC = () => {
         }
         case "WEENUS": {
           const gasLimit = await weenus.methods
-            .transfer(to, ethereumToWei(value))
+            .transfer(to, ethereumToWei(value).toString())
             .estimateGas({
               to,
               gasPrice,
@@ -76,7 +76,7 @@ export const WithdrawBox: React.FC = () => {
         break;
       case "WEENUS":
         weenus.methods
-          .transfer(to, ethereumToWei(value))
+          .transfer(to, ethereumToWei(value).toString())
           .send({ from }, handleStatus);
         break;
     }
