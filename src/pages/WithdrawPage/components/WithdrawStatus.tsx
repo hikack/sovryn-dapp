@@ -12,7 +12,7 @@ export const WithdrawStatus: React.FC<Props> = ({ hash, onClose }) => {
   const { resetStatus } = useWalletUtils();
 
   const handleClose = () => {
-    resetStatus();
+    setTimeout(resetStatus, 500);
     onClose();
   };
 

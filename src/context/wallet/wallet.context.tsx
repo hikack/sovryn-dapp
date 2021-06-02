@@ -5,6 +5,7 @@ import Web3 from "web3";
 import { walletReducer } from "./wallet.reducer";
 import { Dispatch, Getters, State } from "./wallet.types";
 import { WEENUS_ADDRESS } from "config/weenusAddress";
+import toast from "react-hot-toast";
 const WEENUS_ABI = require("../../config/weenusABI.json");
 
 declare global {
@@ -104,10 +105,14 @@ export const useWalletUtils = () => {
       web3?.eth.getTransactionReceipt(
         hash,
         async (error, transactionReceipt) => {
-          if (error) return clearInterval(intervalId);
+          if (error) {
+            toast.error(error.message);
+            return clearInterval(intervalId);
+          }
 
           if (transactionReceipt) {
             if (transactionReceipt.status) {
+              toast.success("transaction successfull!");
               dispatch({ type: "SET_STATUS", payload: "successfull" });
 
               const account = (await web3.eth.getAccounts())[0];
@@ -131,6 +136,7 @@ export const useWalletUtils = () => {
                 payload: { key: "WEENUS", value: weenusBalance },
               });
             } else {
+              toast.error("transaction failure!");
               dispatch({ type: "SET_STATUS", payload: "failure" });
             }
 

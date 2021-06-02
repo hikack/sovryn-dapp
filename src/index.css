@@ -44,3 +44,9 @@ input[type="number"]::-webkit-outer-spin-button {
 .fade-exit-active {
   transition: opacity 500ms ease-in-out;
 }
+
+.react-hot-toast {
+  margin-top: 4.5rem !important;
+  background: #333333 !important;
+  color: #e9eae9 !important;
+}

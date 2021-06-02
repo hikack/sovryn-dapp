@@ -18,7 +18,7 @@ export const CurrencyInput: React.FC<Props> = ({
   hasPercentSelection = true,
   onChange,
 }) => {
-  const { balances } = useWalletState();
+  const { balances, account } = useWalletState();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const input = parseFloat(e.target.value);
@@ -31,7 +31,7 @@ export const CurrencyInput: React.FC<Props> = ({
 
   useEffect(() => {
     onChange?.(0);
-  }, [activeAsset, onChange]);
+  }, [account, activeAsset, onChange]);
 
   return (
     <>

@@ -20,7 +20,7 @@ export const WithdrawConfirmation: React.FC<Props> = ({
       <h4 className="text-lg font-semibold mb-9 text-dark-white">
         {formatCurrency(value)} {activeAsset}
       </h4>
-      <p className="text-sm font-medium mb-8 text-dark-white truncate max-w-sm">
+      <p className="text-sm font-medium mb-8 text-dark-white truncate max-w-xs">
         From: {from}
       </p>
       <img
@@ -29,7 +29,7 @@ export const WithdrawConfirmation: React.FC<Props> = ({
         width="40"
         alt="arrow-down"
       />
-      <p className="text-sm font-medium mb-8 text-dark-white truncate max-w-sm">
+      <p className="text-sm font-medium mb-8 text-dark-white truncate max-w-xs">
         To: {to}
       </p>
       <div className="flex items-center w-full mb-9">
