@@ -6,6 +6,7 @@ import { WithdrawStatus } from "./WithdrawStatus";
 import { Transaction } from "../types/transaction.interface";
 import { useWalletState, useWalletUtils } from "context/wallet/wallet.context";
 import { ethereumToWei, weiToEthereum } from "utils/weiEthereumConverter";
+import { SwitchTransition, CSSTransition } from "react-transition-group";
 
 export const WithdrawBox: React.FC = () => {
   const [hash, setHash] = useState("");
@@ -94,23 +95,35 @@ export const WithdrawBox: React.FC = () => {
       className="bg-box-background border rounded-3xl border-box-border py-11 px-8 w-full flex flex-col items-center text-white"
       style={{ maxWidth: "25rem" }}
     >
-      {step === WithdrawBoxStep.FORM && (
-        <WithdrawForm onSubmit={handleFormSubmit} />
-      )}
+      <SwitchTransition>
+        <CSSTransition
+          key={step}
+          addEndListener={(node, done) =>
+            node.addEventListener("transitionend", done, false)
+          }
+          classNames="fade"
+        >
+          <div className="w-full flex flex-col items-center">
+            {step === WithdrawBoxStep.FORM && (
+              <WithdrawForm onSubmit={handleFormSubmit} />
+            )}
 
-      {step === WithdrawBoxStep.CONFIRMATION && (
-        <WithdrawConfirmation
-          transaction={transaction}
-          onConfirm={handleConfirm}
-        />
-      )}
+            {step === WithdrawBoxStep.CONFIRMATION && (
+              <WithdrawConfirmation
+                transaction={transaction}
+                onConfirm={handleConfirm}
+              />
+            )}
 
-      {step === WithdrawBoxStep.STATUS && (
-        <WithdrawStatus
-          hash={hash}
-          onClose={() => setStep(WithdrawBoxStep.FORM)}
-        />
-      )}
+            {step === WithdrawBoxStep.STATUS && (
+              <WithdrawStatus
+                hash={hash}
+                onClose={() => setStep(WithdrawBoxStep.FORM)}
+              />
+            )}
+          </div>
+        </CSSTransition>
+      </SwitchTransition>
     </section>
   );
 };
